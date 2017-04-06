@@ -15,6 +15,7 @@
  */
 package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import eu.elixir.ega.ebi.egacipher.EgaFakeSeekableStream;
 import eu.elixir.ega.ebi.egacipher.EgaGpgStream;
 import eu.elixir.ega.ebi.egacipher.EgaSeekableCipherStream;
@@ -65,6 +66,7 @@ public class SemanticServiceImpl implements SemanticService {
     private static final int BUFFER_SIZE = 4096;
 
     @Override
+    @HystrixCommand
     public SAMFileHeader getHeader(ArchiveSource source,
                             HttpServletRequest request,
                             HttpServletResponse response) {
@@ -97,6 +99,7 @@ public class SemanticServiceImpl implements SemanticService {
     }
 
     // Return Unencrypted Seekable Stream from Source
+    @HystrixCommand
     private SeekableStream getSource(String sourceFormat, 
                                 String sourceKey, 
                                 String fileLocation,
@@ -139,6 +142,7 @@ public class SemanticServiceImpl implements SemanticService {
      * Archive Related Helper Functions -- GPG
      */
     
+    @HystrixCommand
     private SeekableStream getSymmetricGPGDecryptingInputStream(InputStream c_in, String sourceKey) {
         Security.addProvider(new BouncyCastleProvider());
         InputStream in = c_in;

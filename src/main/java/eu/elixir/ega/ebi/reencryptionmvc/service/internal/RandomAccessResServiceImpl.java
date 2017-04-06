@@ -16,6 +16,7 @@
 package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 
 import com.google.common.io.ByteStreams;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import eu.elixir.ega.ebi.egacipher.EgaFakeSeekableStream;
 import eu.elixir.ega.ebi.egacipher.EgaGPGOutputStream;
@@ -123,6 +124,7 @@ public class RandomAccessResServiceImpl implements ResService {
      */
     
     @Override
+    @HystrixCommand
     public void transfer(String sourceFormat, 
                          String sourceKey, 
                          String destintionFormat, 
@@ -256,6 +258,7 @@ public class RandomAccessResServiceImpl implements ResService {
      */
     
     // Return Unencrypted Seekable Stream from Source
+    @HystrixCommand
     private SeekableStream getSource(String sourceFormat, 
                                 String sourceKey, 
                                 String fileLocation,
@@ -296,6 +299,7 @@ public class RandomAccessResServiceImpl implements ResService {
     }
     
     // Return ReEncrypted Output Stream for Target
+    @HystrixCommand
     private OutputStream getTarget(OutputStream outStream,
                                    String destinationFormat, 
                                    String destinationKey) throws NoSuchAlgorithmException, 
@@ -343,6 +347,7 @@ public class RandomAccessResServiceImpl implements ResService {
      * Archive Related Helper Functions -- GPG
      */
     
+    @HystrixCommand
     private SeekableStream getSymmetricGPGDecryptingInputStream(InputStream c_in, String sourceKey) {
         Security.addProvider(new BouncyCastleProvider());
         InputStream in = c_in;
@@ -365,6 +370,7 @@ public class RandomAccessResServiceImpl implements ResService {
         return new EgaFakeSeekableStream(in);
     }
     
+    @HystrixCommand
     private SeekableStream getAsymmetricGPGDecryptingInputStream(InputStream c_in, String sourceKey, String sourceFormat) {
         Security.addProvider(new BouncyCastleProvider());
         InputStream in = null;
@@ -463,6 +469,7 @@ public class RandomAccessResServiceImpl implements ResService {
     
     // *************************************************************************
     // ** Get Public Key fo Encryption
+    @HystrixCommand
     public PGPPublicKey getPublicGPGKey(String destinationFormat) throws IOException {
         PGPPublicKey pgKey = null;
         Security.addProvider(new BouncyCastleProvider());
@@ -491,6 +498,7 @@ public class RandomAccessResServiceImpl implements ResService {
     }
     
     // Getting a public GPG key from a keyring
+    @HystrixCommand
     private PGPPublicKey readPublicKey(InputStream in)
             throws IOException, PGPException {
         in = PGPUtil.getDecoderStream(in);
@@ -529,6 +537,7 @@ public class RandomAccessResServiceImpl implements ResService {
         return key;
     }
     
+    @HystrixCommand
     private static PGPPublicKeyRing getKeyring(InputStream keyBlockStream) throws IOException {
         // PGPUtil.getDecoderStream() will detect ASCII-armor automatically and decode it,
         // the PGPObject factory then knows how to read all the data in the encoded stream
@@ -544,6 +553,7 @@ public class RandomAccessResServiceImpl implements ResService {
     }
     
     // -------------------------------------------------------------------------
+    @HystrixCommand
     private static PGPPublicKey getEncryptionKey(PGPPublicKeyRing keyRing) {
         if (keyRing == null)
             return null;

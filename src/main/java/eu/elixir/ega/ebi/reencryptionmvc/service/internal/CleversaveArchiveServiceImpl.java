@@ -15,6 +15,7 @@
  */
 package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.MyFireConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.config.NotFoundException;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.EgaFile;
@@ -56,6 +57,7 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
     private MyFireConfig myFireConfig;
     
     @Override
+    @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
 
         // Get Filename from EgaFile ID - via DATA service (potentially multiple files)
@@ -88,6 +90,7 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
      * Helper Functions [Legacy Code!] TODO - Rework this Code!
      */
     
+    @HystrixCommand
     private String[] getPath(String path) {
         if (path.equalsIgnoreCase("Virtual File")) return new String[]{"Virtual File"};
         
@@ -151,6 +154,7 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
     }
 
     // Get the length of a file, from disk or Cleversafe server
+    @HystrixCommand
     private long getLength(String[] path) {
         long result = -1;
         
@@ -190,6 +194,7 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
     }
  
     // Downstream Helper Function - List supported ReEncryption Formats
+    @HystrixCommand
     public String[] getEncryptionFormats() {
         return keyService.getFormats();
     }

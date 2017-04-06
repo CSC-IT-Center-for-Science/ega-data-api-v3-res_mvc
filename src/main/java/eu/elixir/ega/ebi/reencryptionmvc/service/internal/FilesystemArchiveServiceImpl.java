@@ -15,6 +15,7 @@
  */
 package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import eu.elixir.ega.ebi.reencryptionmvc.config.NotFoundException;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.EgaFile;
 import eu.elixir.ega.ebi.reencryptionmvc.service.ArchiveService;
@@ -43,6 +44,7 @@ public class FilesystemArchiveServiceImpl implements ArchiveService {
     private KeyService keyService;
     
     @Override
+    @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
 
         // Get Filename from EgaFile ID - via DATA service (potentially multiple files)
@@ -67,6 +69,7 @@ public class FilesystemArchiveServiceImpl implements ArchiveService {
     }
  
     // Downstream Helper Function - List supported ReEncryption Formats
+    @HystrixCommand
     public String[] getEncryptionFormats() {
         return keyService.getFormats();
     }

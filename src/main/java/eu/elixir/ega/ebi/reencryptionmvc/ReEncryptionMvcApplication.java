@@ -18,7 +18,9 @@ package eu.elixir.ega.ebi.reencryptionmvc;
 import eu.elixir.ega.ebi.reencryptionmvc.config.MyConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import springfox.documentation.builders.PathSelectors;
@@ -30,6 +32,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @Import({MyConfiguration.class})
 @EnableSwagger2
+@EnableCircuitBreaker
+@EnableHystrix
 @EnableEurekaClient
 public class ReEncryptionMvcApplication {
 
