@@ -66,4 +66,4 @@ These commands perform a series of actions:
 
 The Docker image can also be obtained directly from Docker Hub:  
 
-`sudo docker run -d -p 9050:9050 alexandersenf/ega_access`  or by running the `./runfromimage.sh` file.
+`sudo docker run -d -p 9090:9090 alexandersenf/ega_access`  or by running the `./runfromimage.sh` file.
