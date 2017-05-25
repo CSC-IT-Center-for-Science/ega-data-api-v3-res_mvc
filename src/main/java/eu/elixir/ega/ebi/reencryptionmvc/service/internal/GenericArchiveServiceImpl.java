@@ -31,9 +31,10 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author asenf
  */
+//@Primary
 @Service
 @EnableDiscoveryClient
-public class FilesystemArchiveServiceImpl implements ArchiveService {
+public class GenericArchiveServiceImpl implements ArchiveService {
 
     private final String SERVICE_URL = "http://DOWNLOADER";
     

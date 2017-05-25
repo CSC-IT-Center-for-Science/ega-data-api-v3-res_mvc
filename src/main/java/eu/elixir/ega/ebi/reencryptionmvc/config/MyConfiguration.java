@@ -15,7 +15,9 @@
  */
 package eu.elixir.ega.ebi.reencryptionmvc.config;
 
+import eu.elixir.ega.ebi.reencryptionmvc.dto.MyArchiveConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.MyFireConfig;
+import eu.elixir.ega.ebi.reencryptionmvc.dto.MyAwsConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +33,12 @@ public class MyConfiguration {
     @Value("${ega.ebi.fire.url}") String fireUrl;
     @Value("${ega.ebi.fire.archive}") String fireArchive;
     @Value("${ega.ebi.fire.key}") String fireKey;
-        
+
+    @Value("${ega.ebi.aws.access.key}") String awsKey;
+    @Value("${ega.ebi.aws.access.secret}") String awsSecretKey;
+    
+    @Value("${service.archive.class}") String archiveImplBean;
+    
     @Bean
     @LoadBalanced
     RestTemplate restTemplate() {
@@ -43,6 +50,17 @@ public class MyConfiguration {
         return new MyFireConfig(fireUrl,
                                 fireArchive,
                                 fireKey);
+    }
+    
+    @Bean
+    public MyAwsConfig MyAwsCipherConfig() {
+        return new MyAwsConfig(awsKey,
+                                awsSecretKey);
+    }
+
+    @Bean
+    public MyArchiveConfig MyArchiveConfig() {
+        return new MyArchiveConfig(archiveImplBean);
     }
     
 }

@@ -21,6 +21,7 @@ import eu.elixir.ega.ebi.reencryptionmvc.config.NotFoundException;
 import eu.elixir.ega.ebi.reencryptionmvc.service.ArchiveService;
 import eu.elixir.ega.ebi.reencryptionmvc.service.ResService;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.ArchiveSource;
+import eu.elixir.ega.ebi.reencryptionmvc.dto.MyArchiveConfig;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,6 +57,10 @@ public class FileController {
     @Autowired
     private ResService resService;
 
+    // Contains Bean to use for Archive OPerations
+    @Autowired
+    private MyArchiveConfig archiveConfig;
+    
     // Handle Archived File Operations (file identified by Archive ID)
     @Autowired
     private ArchiveService archiveService;    

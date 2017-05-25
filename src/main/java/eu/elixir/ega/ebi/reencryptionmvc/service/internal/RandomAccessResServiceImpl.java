@@ -15,6 +15,12 @@
  */
 package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.google.common.io.ByteStreams;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -27,6 +33,7 @@ import eu.elixir.ega.ebi.egacipher.Glue;
 import eu.elixir.ega.ebi.reencryptionmvc.config.GeneralStreamingException;
 import eu.elixir.ega.ebi.reencryptionmvc.domain.entity.Transfer;
 import eu.elixir.ega.ebi.reencryptionmvc.domain.repository.TransferRepository;
+import eu.elixir.ega.ebi.reencryptionmvc.dto.MyAwsConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.service.KeyService;
 import eu.elixir.ega.ebi.reencryptionmvc.service.ResService;
 
@@ -107,6 +114,9 @@ public class RandomAccessResServiceImpl implements ResService {
 
     @Autowired
     private TransferRepository transferRepository;
+    
+    @Autowired
+    private MyAwsConfig myAwsConfig;
     
     /**
      * Size of a byte buffer to read/write file (for Random Stream)
@@ -268,15 +278,24 @@ public class RandomAccessResServiceImpl implements ResService {
         SeekableStream fileIn = null; // Source of File
         SeekableStream plainIn = null; // Return Stream - a Decrypted File
         try {
-            // Obtain Input Stream - from a File or an HTTP server
-            if (!fileLocation.toLowerCase().startsWith("http")) {
-                fileLocation = "file://" + fileLocation;
-                Path filePath = Paths.get(new URI(fileLocation));
-                fileIn = new SeekablePathStream(filePath);
-            } else { // Need Basic Auth here!
+            // Obtain Input Stream - from a File or an HTTP server; or an S3 Bucket
+            if (fileLocation.toLowerCase().startsWith("http")) { // Access Cleversafe Need Basic Auth here!
                 URL url = new URL(fileLocation);
                 fileIn = httpAuth==null?new SeekableHTTPStream(url):
                                         new EgaSeekableHTTPStream(url, null, httpAuth, fileSize);
+            } else if (fileLocation.toLowerCase().startsWith("s3")) { // S3
+                String awsPath = fileLocation.substring(23); // Strip "S3://"
+                String bucket = fileLocation.substring(5, 20);
+                AWSCredentials credentials = new BasicAWSCredentials(myAwsConfig.getAwsAccessKeyId(), myAwsConfig.getAwsSecretAccessKey());
+                AmazonS3 s3 = new AmazonS3Client(credentials);
+                //S3Object object = s3.getObject(bucket, awsPath);
+                //fileIn = new EgaFakeSeekableStream(object.getObjectContent()); // ??                
+                URL url = s3.getUrl(bucket, awsPath);
+                fileIn = new SeekableHTTPStream(url);
+            } else { // No Protocol -- Assume File Path
+                fileLocation = "file://" + fileLocation;
+                Path filePath = Paths.get(new URI(fileLocation));
+                fileIn = new SeekablePathStream(filePath);
             }
             
             // Obtain Plain Input Stream
