@@ -17,9 +17,9 @@ package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import eu.elixir.ega.ebi.reencryptionmvc.config.NotFoundException;
-import eu.elixir.ega.ebi.reencryptionmvc.dto.EgaFile;
 import eu.elixir.ega.ebi.reencryptionmvc.service.ArchiveService;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.ArchiveSource;
+import eu.elixir.ega.ebi.reencryptionmvc.dto.EgaFile;
 import eu.elixir.ega.ebi.reencryptionmvc.service.KeyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -60,7 +60,7 @@ public class GenericArchiveServiceImpl implements ArchiveService {
         String keyKey = encryptionFormat.toLowerCase().equals("gpg")?"GPG":"AES";
         
         String fileUrlString = body[0].getFileName();
-        long size = body[0].getSize();
+        long size = body[0].getFileSize();
 
         // Get EgaFile encryption Key
         String encryptionKey = keyService.getFileKey(keyKey);

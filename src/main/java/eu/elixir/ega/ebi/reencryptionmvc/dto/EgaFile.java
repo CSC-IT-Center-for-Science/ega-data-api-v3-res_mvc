@@ -29,11 +29,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class EgaFile {
-        private String datasetStableId;
-        private String packetStableId;
+        private String dileId;
         private String fileName;
-        private String indexName;
-        private long size;
-        private String stableId;
-        private String status;    
+        private long fileSize;
+        private String fileStatus;    
 }
