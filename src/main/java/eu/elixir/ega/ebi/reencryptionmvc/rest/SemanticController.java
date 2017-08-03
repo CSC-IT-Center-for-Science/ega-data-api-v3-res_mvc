@@ -23,6 +23,7 @@ import htsjdk.samtools.SAMFileHeader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,10 +40,12 @@ public class SemanticController {
     
     // Handle Any Direct Re/Encryption Operations
     @Autowired
+    @Lazy
     private SemanticService semanticService;
 
     // Handle Archived File Operations (file identified by Archive ID)
     @Autowired
+    @Lazy
     private ArchiveService archiveService;    
     
     

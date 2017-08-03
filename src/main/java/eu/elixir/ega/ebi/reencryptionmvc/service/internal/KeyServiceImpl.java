@@ -18,6 +18,9 @@ package eu.elixir.ega.ebi.reencryptionmvc.service.internal;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import eu.elixir.ega.ebi.reencryptionmvc.service.KeyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,9 +37,12 @@ public class KeyServiceImpl implements KeyService {
     private final String SERVICE_URL = "http://KEYSERVICE";
     
     @Autowired
+    @LoadBalanced
+    @Lazy
     RestTemplate restTemplate;
     
     @Override
+    @Cacheable
     @HystrixCommand
     public String getFileKey(String fileId) {
         
@@ -47,6 +53,7 @@ public class KeyServiceImpl implements KeyService {
     }
 
     @Override
+    @Cacheable
     @HystrixCommand
     public String[] getFormats() {
         
@@ -57,6 +64,7 @@ public class KeyServiceImpl implements KeyService {
     }
     
     @Override
+    @Cacheable
     @HystrixCommand
     public String[] getKeyPath(String key) {
         

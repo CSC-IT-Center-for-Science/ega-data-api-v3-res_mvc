@@ -19,6 +19,9 @@ import eu.elixir.ega.ebi.reencryptionmvc.dto.MyArchiveConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.MyFireConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.MyAwsConfig;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
  * @author asenf
  */
 @Configuration
+@EnableCaching
 public class MyConfiguration {
     @Value("${ega.ebi.fire.url}") String fireUrl;
     @Value("${ega.ebi.fire.archive}") String fireArchive;
@@ -62,5 +66,5 @@ public class MyConfiguration {
     public MyArchiveConfig MyArchiveConfig() {
         return new MyArchiveConfig(archiveImplBean);
     }
-    
+        
 }

@@ -22,7 +22,10 @@ import eu.elixir.ega.ebi.reencryptionmvc.dto.ArchiveSource;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.EgaFile;
 import eu.elixir.ega.ebi.reencryptionmvc.service.KeyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -39,12 +42,16 @@ public class GenericArchiveServiceImpl implements ArchiveService {
     private final String SERVICE_URL = "http://DOWNLOADER";
     
     @Autowired
+    @LoadBalanced
+    @Lazy
     RestTemplate restTemplate;
     
     @Autowired
+    @Lazy
     private KeyService keyService;
     
     @Override
+    @Cacheable
     @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
 

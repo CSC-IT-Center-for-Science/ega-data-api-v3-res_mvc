@@ -97,6 +97,7 @@ import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
 import org.bouncycastle.openpgp.operator.bc.BcPublicKeyDataDecryptorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -110,9 +111,11 @@ import org.springframework.stereotype.Service;
 public class RandomAccessResServiceImpl implements ResService {
 
     @Autowired
+    @Lazy
     private KeyService keyService;
 
     @Autowired
+    @Lazy
     private TransferRepository transferRepository;
     
     @Autowired

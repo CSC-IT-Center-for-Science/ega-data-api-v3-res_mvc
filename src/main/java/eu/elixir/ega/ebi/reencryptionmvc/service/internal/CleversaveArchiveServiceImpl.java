@@ -30,7 +30,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,21 +46,26 @@ import org.springframework.web.client.RestTemplate;
  */
 @Primary
 @Service
+@EnableCaching
 @EnableDiscoveryClient
 public class CleversaveArchiveServiceImpl implements ArchiveService {
 
     private final String SERVICE_URL = "http://DATA";
     
     @Autowired
+    @LoadBalanced
+    @Lazy
     RestTemplate restTemplate;
     
     @Autowired
+    @Lazy
     private KeyService keyService;
     
     @Autowired
     private MyFireConfig myFireConfig;
     
     @Override
+    @Cacheable
     @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
 
@@ -91,6 +100,7 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
      */
     
     @HystrixCommand
+    @Cacheable
     private String[] getPath(String path) {
         if (path.equalsIgnoreCase("Virtual File")) return new String[]{"Virtual File"};
         
@@ -155,6 +165,7 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
 
     // Get the length of a file, from disk or Cleversafe server
     @HystrixCommand
+    @Cacheable
     private long getLength(String[] path) {
         long result = -1;
         
