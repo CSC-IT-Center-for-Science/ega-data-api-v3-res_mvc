@@ -19,6 +19,8 @@ import eu.elixir.ega.ebi.reencryptionmvc.dto.MyArchiveConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.MyFireConfig;
 import eu.elixir.ega.ebi.reencryptionmvc.dto.MyAwsConfig;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
  * @author asenf
  */
 @Configuration
+@EnableDiscoveryClient
 public class MyConfiguration {
     @Value("${ega.ebi.fire.url}") String fireUrl;
     @Value("${ega.ebi.fire.archive}") String fireArchive;
@@ -39,6 +42,7 @@ public class MyConfiguration {
     @Value("${service.archive.class}") String archiveImplBean;
     
     @Bean
+    @LoadBalanced
     RestTemplate restTemplate() {
         return new RestTemplate();
     }

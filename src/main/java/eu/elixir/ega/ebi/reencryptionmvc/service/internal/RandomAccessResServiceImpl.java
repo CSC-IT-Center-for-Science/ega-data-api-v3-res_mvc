@@ -97,6 +97,7 @@ import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
 import org.bouncycastle.openpgp.operator.bc.BcPublicKeyDataDecryptorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -107,6 +108,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Primary
+@EnableDiscoveryClient
 public class RandomAccessResServiceImpl implements ResService {
 
     @Autowired
