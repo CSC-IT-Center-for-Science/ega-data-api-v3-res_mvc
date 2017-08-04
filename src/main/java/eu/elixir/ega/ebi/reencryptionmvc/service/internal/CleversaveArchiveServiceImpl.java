@@ -46,7 +46,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @Primary
 @Service
-@EnableCaching
 @EnableDiscoveryClient
 public class CleversaveArchiveServiceImpl implements ArchiveService {
 
@@ -63,7 +62,6 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
     private MyFireConfig myFireConfig;
     
     @Override
-    @Cacheable
     @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
 
@@ -98,7 +96,6 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
      */
     
     @HystrixCommand
-    @Cacheable
     private String[] getPath(String path) {
         if (path.equalsIgnoreCase("Virtual File")) return new String[]{"Virtual File"};
         
@@ -163,7 +160,6 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
 
     // Get the length of a file, from disk or Cleversafe server
     @HystrixCommand
-    @Cacheable
     private long getLength(String[] path) {
         long result = -1;
         

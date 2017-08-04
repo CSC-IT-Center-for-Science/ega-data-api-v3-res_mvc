@@ -32,7 +32,6 @@ import org.springframework.web.client.RestTemplate;
  * @author asenf
  */
 @Configuration
-@EnableCaching
 public class MyConfiguration {
     @Value("${ega.ebi.fire.url}") String fireUrl;
     @Value("${ega.ebi.fire.archive}") String fireArchive;

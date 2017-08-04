@@ -33,7 +33,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @Import({MyConfiguration.class})
 @EnableSwagger2
-@EnableCaching
 @EnableCircuitBreaker
 @EnableHystrix
 @EnableEurekaClient

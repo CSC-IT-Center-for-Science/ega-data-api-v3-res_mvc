@@ -49,7 +49,6 @@ public class GenericArchiveServiceImpl implements ArchiveService {
     private KeyService keyService;
     
     @Override
-    @Cacheable
     @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
 

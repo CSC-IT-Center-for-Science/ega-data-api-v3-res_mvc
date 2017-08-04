@@ -41,7 +41,6 @@ public class KeyServiceImpl implements KeyService {
     RestTemplate restTemplate;
     
     @Override
-    @Cacheable
     @HystrixCommand
     public String getFileKey(String fileId) {
         
@@ -52,7 +51,6 @@ public class KeyServiceImpl implements KeyService {
     }
 
     @Override
-    @Cacheable
     @HystrixCommand
     public String[] getFormats() {
         
@@ -63,7 +61,6 @@ public class KeyServiceImpl implements KeyService {
     }
     
     @Override
-    @Cacheable
     @HystrixCommand
     public String[] getKeyPath(String key) {
         
