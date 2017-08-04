@@ -40,12 +40,10 @@ public class SemanticController {
     
     // Handle Any Direct Re/Encryption Operations
     @Autowired
-    @Lazy
     private SemanticService semanticService;
 
     // Handle Archived File Operations (file identified by Archive ID)
     @Autowired
-    @Lazy
     private ArchiveService archiveService;    
     
     

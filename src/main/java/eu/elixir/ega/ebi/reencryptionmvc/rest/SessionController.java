@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SessionController {
 
     @Autowired
-    @Lazy
     private SessionService sessionService;
     
     @RequestMapping(value = "/{session_id}", method = GET)

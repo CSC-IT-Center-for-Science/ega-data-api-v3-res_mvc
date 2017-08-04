@@ -38,7 +38,6 @@ public class KeyServiceImpl implements KeyService {
     
     @Autowired
     @LoadBalanced
-    @Lazy
     RestTemplate restTemplate;
     
     @Override

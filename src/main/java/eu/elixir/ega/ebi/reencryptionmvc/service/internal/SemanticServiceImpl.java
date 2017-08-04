@@ -59,7 +59,6 @@ import org.springframework.stereotype.Service;
 public class SemanticServiceImpl implements SemanticService {
 
     @Autowired
-    @Lazy
     private KeyService keyService;
     
     /**

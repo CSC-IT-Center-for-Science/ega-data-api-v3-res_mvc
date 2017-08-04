@@ -54,11 +54,9 @@ public class CleversaveArchiveServiceImpl implements ArchiveService {
     
     @Autowired
     @LoadBalanced
-    @Lazy
     RestTemplate restTemplate;
     
     @Autowired
-    @Lazy
     private KeyService keyService;
     
     @Autowired

@@ -64,7 +64,6 @@ public class FileController {
     
     // Handle Archived File Operations (file identified by Archive ID)
     @Autowired
-    @Lazy
     private ArchiveService archiveService;    
     
     /**

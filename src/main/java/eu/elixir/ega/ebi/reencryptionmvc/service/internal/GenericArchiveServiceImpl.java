@@ -43,11 +43,9 @@ public class GenericArchiveServiceImpl implements ArchiveService {
     
     @Autowired
     @LoadBalanced
-    @Lazy
     RestTemplate restTemplate;
     
     @Autowired
-    @Lazy
     private KeyService keyService;
     
     @Override
