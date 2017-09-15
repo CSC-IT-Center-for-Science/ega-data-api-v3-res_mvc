@@ -85,7 +85,7 @@ public class FileController {
                         @RequestParam(value = "httpAuth", required = false, defaultValue = "") String httpAuth,
                         HttpServletRequest request,
                         HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
-
+	System.out.println("resService.transfer(" + sourceKey + "," + sourceFormat + "," + destinationFormat + "," + destinationKey + "," + filePath + "," + startCoordinate + "," + endCoordinate + "," + fileSize + "," + httpAuth + "," + request + "," + response);
         resService.transfer(sourceFormat, 
                             sourceKey, 
                             destinationFormat, 
@@ -108,7 +108,7 @@ public class FileController {
                                @RequestParam(value = "endCoordinate", required = false, defaultValue = "0") long endCoordinate, 
                                HttpServletRequest request,
                                HttpServletResponse response) throws IOException, NoSuchAlgorithmException {
-
+	System.out.println("getArchiveFile() with /archive/ " + id);
         // Resolve Archive ID to actual File Path/URL - Needs Organization-Specific Implementation!
         ArchiveSource source = archiveService.getArchiveFile(id);
         if (source==null) {

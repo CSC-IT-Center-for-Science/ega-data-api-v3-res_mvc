@@ -250,7 +250,7 @@ public class RandomAccessResServiceImpl implements ResService {
                 }
 
                 // Store with UUID for later retrieval
-                Transfer transfer = new Transfer(headerValue,
+                /* Transfer transfer = new Transfer(headerValue,
                                                  new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()),
                                                  plainHashtext,
                                                  encryptedHashtext,
@@ -258,7 +258,7 @@ public class RandomAccessResServiceImpl implements ResService {
                                                  bytes,
                                                  "RES");
                 Transfer save = transferRepository.save(transfer);
-                
+                */
             } catch (Exception ex) {
                 throw new GeneralStreamingException(ex.toString(), 5);
             }
@@ -304,8 +304,10 @@ public class RandomAccessResServiceImpl implements ResService {
             if (sourceFormat.equalsIgnoreCase("plain")) {
                 plainIn = fileIn; // No Decryption Necessary
             } else if (sourceFormat.equalsIgnoreCase("aes128")) {
+		System.out.println("getSource() AES128");
                 plainIn = new EgaSeekableCipherStream(fileIn, sourceKey.toCharArray(), BUFFER_SIZE, 128);
             } else if (sourceFormat.equalsIgnoreCase("aes256")) {
+		System.out.println("getSource() AES256");
                 plainIn = new EgaSeekableCipherStream(fileIn, sourceKey.toCharArray(), BUFFER_SIZE, 256);
             } else if (sourceFormat.equalsIgnoreCase("symmetricgpg")) {
                 plainIn = getSymmetricGPGDecryptingInputStream(fileIn, sourceKey);

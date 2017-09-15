@@ -40,7 +40,6 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author asenf
  */
-@Primary
 @Service
 @EnableDiscoveryClient
 public class CleversaveArchiveServiceImpl implements ArchiveService {

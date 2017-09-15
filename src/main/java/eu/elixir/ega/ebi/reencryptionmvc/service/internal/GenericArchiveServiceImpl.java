@@ -26,6 +26,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.context.annotation.Primary;
 
 /**
  *
@@ -34,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 //@Primary
 @Service
 @EnableDiscoveryClient
+@Primary
 public class GenericArchiveServiceImpl implements ArchiveService {
 
     private final String SERVICE_URL = "http://DOWNLOADER";
@@ -47,6 +49,7 @@ public class GenericArchiveServiceImpl implements ArchiveService {
     @Override
     @HystrixCommand
     public ArchiveSource getArchiveFile(String id) {
+	System.out.println("getArchiveFile(" + id + ")");
 
         // Get Filename from EgaFile ID - via DATA service (potentially multiple files)
         ResponseEntity<EgaFile[]> forEntity = restTemplate.getForEntity(SERVICE_URL + "/file/{file_id}", EgaFile[].class, id);
@@ -56,15 +59,17 @@ public class GenericArchiveServiceImpl implements ArchiveService {
             throw new NotFoundException("Can't obtain File data for ID", id);
         }
         // Guess Encryption Format from File
-        String encryptionFormat = fileName.toLowerCase().endsWith("gpg")?"symmetricgpg":"aes256";
+        String encryptionFormat = fileName.toLowerCase().endsWith("gpg")?"symmetricgpg":"aes128";
         String keyKey = encryptionFormat.toLowerCase().equals("gpg")?"GPG":"AES";
         
         String fileUrlString = body[0].getFileName();
         long size = body[0].getFileSize();
 
+	System.out.println("fileUrlString: " + fileUrlString);
+
         // Get EgaFile encryption Key
         String encryptionKey = keyService.getFileKey(keyKey);
-
+	System.out.println("getArchiveFile() fileUrlString: " + fileUrlString + "size: " + size + " encryptionFormat: " + encryptionFormat + " encryptionKey: " + encryptionKey);
         // Build result object and return it
         return new ArchiveSource(fileUrlString, size, "", encryptionFormat, encryptionKey);
     }
